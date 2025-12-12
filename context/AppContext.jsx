@@ -2,7 +2,7 @@
 
 import { useAuth, useUser } from '@clerk/nextjs'
 import axios from 'axios'
-import { headers } from 'next/headers'
+// import { headers } from 'next/headers'
 import { createContext, useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
