@@ -25,7 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
       <AppContextProvider>
         <html lang="en">
-          <body className={`${inter.variable} ${inter.variable} antialiased`}>
+          <body className={`${inter.variable} antialiased`}>
             <Toaster
               toastOptions={{
                 success: { style: { background: "black", color: "white" } },

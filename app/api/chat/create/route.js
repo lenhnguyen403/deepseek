@@ -8,7 +8,7 @@ export async function POST(req) {
         const { userId } = getAuth(req)
 
         if (!userId) {
-            return NextResponse.json({ success: false, messages: "User not authenticated", })
+            return NextResponse.json({ success: false, message: "User not authenticated", })
         }
 
         // Prepare the chat data to be saved in the database
@@ -23,7 +23,7 @@ export async function POST(req) {
         await connectDB()
         await Chat.create(chatData)
 
-        return NextResponse.json({ success: true, messages: "Chat created" })
+        return NextResponse.json({ success: true, message: "Chat created" })
     } catch (error) {
         return NextResponse.json({ success: false, error: error.message })
     }

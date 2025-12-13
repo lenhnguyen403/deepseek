@@ -10,7 +10,7 @@ export async function POST(req) {
         if (!userId) {
             return NextResponse.json({
                 success: false,
-                messages: "User not authenticated",
+                message: "User not authenticated",
             })
         }
 

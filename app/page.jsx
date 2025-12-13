@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -17,7 +17,7 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedChat) {
-      setMessages(selectedChat.messages)
+      setMessages(selectedChat.messages || [])
     }
   }, [selectedChat])
 
@@ -54,7 +54,7 @@ export default function Home() {
             />
           </div>
 
-          {messages.length === 0 ? (
+          {messages?.length === 0 ? (
             <>
               <div className="flex items-center gap-3">
                 <Image src={assets.logo_icon} alt="" className="h-16" />

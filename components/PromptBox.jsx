@@ -33,6 +33,11 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
             setIsLoading(true)
             setPrompt('')
 
+            if (!selectedChat) {
+                setIsLoading(false)
+                return toast.error('Please select a chat first')
+            }
+
             const userPrompt = {
                 role: 'user',
                 content: prompt,
@@ -43,14 +48,14 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
             setChats((prevChats) => prevChats.map((chat) => chat._id === selectedChat._id
                 ? {
                     ...chat,
-                    messages: [...chat.messages, userPrompt]
+                    messages: [...(chat.messages || []), userPrompt]
                 } : chat
             ))
 
             // saving user prompt in selected chat
-            selectedChat((prev) => ({
+            setSelectedChat((prev) => ({
                 ...prev,
-                messages: [...prev.messages, userPrompt]
+                messages: [...(prev.messages || []), userPrompt]
             }))
 
             const { data } = await axios.post('/api/chat/ai', {
@@ -60,7 +65,7 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
 
             if (data.success) {
                 setChats((prevChats) => prevChats.map((chat) => chat._id === selectedChat._id
-                    ? { ...chat, messages: [...chat.messages, data.data] } : chat))
+                    ? { ...chat, messages: [...(chat.messages || []), data.data] } : chat))
 
                 const message = data.data.content
                 const messageTokens = message.split(" ")
@@ -72,7 +77,7 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
 
                 setSelectedChat((prev) => ({
                     ...prev,
-                    messages: [...prev.messages, assistantMessage],
+                    messages: [...(prev.messages || []), assistantMessage],
                 }))
 
                 for (let i = 0; i < messageTokens.length; i++) {
@@ -101,7 +106,7 @@ const PromptBox = ({ isLoading, setIsLoading }) => {
     }
 
     return (
-        <form onSubmit={sendPrompt} className={`w-full ${selectedChat.messages.length > 0 ? 'max-w-3xl' : 'max-w-2xl'}
+        <form onSubmit={sendPrompt} className={`w-full ${selectedChat?.messages?.length > 0 ? 'max-w-3xl' : 'max-w-2xl'}
         bg-[#404045] p-4 rounded-3xl mt-4 transition-all`}>
             <textarea onKeyDown={handleKeyDown} rows={2} placeholder='Message Deepseek'
                 className='outline-none w-full resize-none overflow-hidden

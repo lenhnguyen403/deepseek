@@ -28,6 +28,13 @@ export async function POST(req) {
         await connectDB()
         const data = await Chat.findOne({ userId, _id: chatId })
 
+        if (!data) {
+            return NextResponse.json({
+                success: false,
+                message: "Chat not found"
+            })
+        }
+
         // create a user message object
         const userPrompt = {
             role: "user",
@@ -48,7 +55,7 @@ export async function POST(req) {
         message.timestamp = Date.now()
 
         data.messages.push(message)
-        data.save()
+        await data.save()
 
         return NextResponse.json({ success: true, data: message })
 
